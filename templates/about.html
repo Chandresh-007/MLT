@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}MindfulTech – About{% endblock %}
+{% block content %}
+<section class="py-5">
+  <div class="container" style="max-width:820px">
+    <h2 class="section-title">About MindfulTech</h2>
+    <div class="card p-4 mb-4 animate-in">
+      <h5><i class="bi bi-bullseye me-2" style="color:var(--mt-primary)"></i>Project Objective</h5>
+      <p>
+        MindfulTech is an educational machine learning project designed to analyse
+        digital usage patterns. It collects self-reported data about screen time,
+        social-media use, sleep, focus, and other daily habits, then applies multiple
+        ML algorithms to classify a user's digital-wellbeing risk and identify
+        behavioural clusters.
+      </p>
+      <p class="mb-0">
+        The primary goal is to demonstrate a complete ML workflow — from data
+        preprocessing and exploratory analysis to model training, evaluation,
+        prediction, and web-based deployment.
+      </p>
+    </div>
+    <div class="card p-4 mb-4 animate-in delay-1">
+      <h5><i class="bi bi-cpu me-2" style="color:var(--mt-primary)"></i>Machine Learning Techniques</h5>
+      <ul>
+        <li><strong>Logistic Regression</strong> — baseline linear classifier.</li>
+        <li><strong>Decision Tree</strong> — interpretable rule-based model.</li>
+        <li><strong>Random Forest</strong> — ensemble of decision trees for robust classification.</li>
+        <li><strong>Support Vector Machine (SVM)</strong> — kernel-based non-linear classifier.</li>
+        <li><strong>K-Means Clustering</strong> — unsupervised grouping of usage patterns.</li>
+        <li><strong>Linear Regression</strong> — continuous wellbeing-score prediction.</li>
+      </ul>
+      <p class="mb-0">
+        Models are evaluated using Accuracy, Precision, Recall, F1-score, and
+        Confusion Matrices on a stratified 80/20 train-test split.
+      </p>
+    </div>
+    <div class="card p-4 mb-4 animate-in delay-2">
+      <h5><i class="bi bi-stack me-2" style="color:var(--mt-primary)"></i>Technology Stack</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <h6>Frontend</h6>
+          <ul class="mb-3">
+            <li>HTML5 / CSS3 / JavaScript</li>
+            <li>Bootstrap 5</li>
+            <li>Chart.js</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h6>Backend &amp; ML</h6>
+          <ul class="mb-3">
+            <li>Python / Flask</li>
+            <li>Pandas, NumPy</li>
+            <li>Scikit-learn</li>
+            <li>Matplotlib, Seaborn</li>
+            <li>Joblib</li>
+            <li>SQLite</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card p-4 mb-4 animate-in delay-3">
+      <h5><i class="bi bi-database me-2" style="color:var(--mt-primary)"></i>Dataset</h5>
+      <p>
+        The project uses a <strong>synthetic dataset</strong> of 1,500 records generated
+        for educational and demonstration purposes. Risk labels and wellbeing scores
+        are derived from weighted feature rules that model realistic behavioural
+        risk factors.
+      </p>
+      <p class="mb-0">
+        <strong>Note:</strong> This dataset is not based on real-world survey data.
+        It should not be used for actual psychological or health-related conclusions.
+      </p>
+    </div>
+    <div class="card p-4 mb-4 animate-in delay-4" style="border-left:4px solid var(--mt-moderate)">
+      <h5><i class="bi bi-exclamation-triangle me-2" style="color:var(--mt-moderate)"></i>Important Limitations</h5>
+      <ul class="mb-2">
+        <li>MindfulTech is an <strong>educational project</strong> — its predictions are
+            behavioural indicators and are <strong>not</strong> medical or psychological diagnoses.</li>
+        <li>The system does not measure dopamine levels, diagnose addiction, or assess
+            mental-health conditions.</li>
+        <li>Recommendations are general wellbeing suggestions, not professional medical advice.</li>
+        <li>The synthetic dataset may not reflect real-world population distributions.</li>
+        <li>Model accuracy is constrained by the quality and diversity of the training data.</li>
+      </ul>
+      <div class="disclaimer">
+        If you have concerns about your digital habits or mental wellbeing, please
+        consult a qualified healthcare professional.
+      </div>
+    </div>
+    <div class="card p-4 animate-in delay-4">
+      <h5><i class="bi bi-rocket-takeoff me-2" style="color:var(--mt-primary)"></i>Future Improvements</h5>
+      <ul class="mb-0">
+        <li>Use a real, ethically collected survey dataset.</li>
+        <li>Add neural-network-based models (e.g., MLP classifier).</li>
+        <li>Integrate time-series analysis for longitudinal tracking.</li>
+        <li>Deploy with user authentication for secure personal dashboards.</li>
+        <li>Add data export (CSV / PDF) for user records.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

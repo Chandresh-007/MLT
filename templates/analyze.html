@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}MindfulTech – Analyze Habits{% endblock %}
+{% block content %}
+<section class="py-5">
+  <div class="container" style="max-width:820px">
+    <h2 class="section-title">Analyze Your Digital Habits</h2>
+    <p class="text-muted mb-4">
+      Fill in the form below with your typical daily digital usage.
+      All fields are numeric — no personally identifiable information is collected.
+    </p>
+    <form action="{{ url_for('analyze') }}" method="POST" id="habitForm">
+      <div class="card p-4 mb-4">
+        <h5 class="mb-3"><i class="bi bi-person me-2"></i>Demographics</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="age" class="form-label">Age</label>
+            <input type="number" class="form-control" id="age" name="age" min="10" max="80" value="20" required>
+          </div>
+        </div>
+      </div>
+      <div class="card p-4 mb-4">
+        <h5 class="mb-3"><i class="bi bi-phone me-2"></i>Screen &amp; Device Usage</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="screen_time" class="form-label">Daily Screen Time (hours)</label>
+            <input type="number" class="form-control" id="screen_time" name="screen_time" min="0" max="24" step="0.5" value="4" required>
+          </div>
+          <div class="col-md-6">
+            <label for="social_media" class="form-label">Social Media Usage (hours)</label>
+            <input type="number" class="form-control" id="social_media" name="social_media" min="0" max="18" step="0.5" value="1.5" required>
+          </div>
+          <div class="col-md-6">
+            <label for="gaming" class="form-label">Gaming Usage (hours)</label>
+            <input type="number" class="form-control" id="gaming" name="gaming" min="0" max="18" step="0.5" value="0.5" required>
+          </div>
+          <div class="col-md-6">
+            <label for="short_video" class="form-label">Short-Video Usage (hours)</label>
+            <input type="number" class="form-control" id="short_video" name="short_video" min="0" max="18" step="0.5" value="1" required>
+          </div>
+          <div class="col-md-6">
+            <label for="phone_unlocks" class="form-label">Phone Unlocks per Day</label>
+            <input type="number" class="form-control" id="phone_unlocks" name="phone_unlocks" min="0" max="500" value="50" required>
+          </div>
+          <div class="col-md-6">
+            <label for="notifications" class="form-label">Notifications Received per Day</label>
+            <input type="number" class="form-control" id="notifications" name="notifications" min="0" max="1000" value="80" required>
+          </div>
+          <div class="col-md-6">
+            <label for="night_usage" class="form-label">Night-time Phone Usage (hours)</label>
+            <input type="number" class="form-control" id="night_usage" name="night_usage" min="0" max="10" step="0.5" value="0.5" required>
+          </div>
+        </div>
+      </div>
+      <div class="card p-4 mb-4">
+        <h5 class="mb-3"><i class="bi bi-heart-pulse me-2"></i>Wellbeing Indicators</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="sleep" class="form-label">Sleep Duration (hours)</label>
+            <input type="number" class="form-control" id="sleep" name="sleep" min="0" max="16" step="0.5" value="7" required>
+          </div>
+          <div class="col-md-6">
+            <label for="focus_time" class="form-label">Daily Focus / Study Time (hours)</label>
+            <input type="number" class="form-control" id="focus_time" name="focus_time" min="0" max="18" step="0.5" value="3" required>
+          </div>
+          <div class="col-md-6">
+            <label for="exercise" class="form-label">Exercise Duration (minutes)</label>
+            <input type="number" class="form-control" id="exercise" name="exercise" min="0" max="300" value="30" required>
+          </div>
+          <div class="col-md-6">
+            <label for="stress" class="form-label">Stress Level (1 = very low, 10 = very high)</label>
+            <input type="range" class="form-range mt-2" id="stress" name="stress" min="1" max="10" value="5" oninput="stressVal.textContent=this.value">
+            <div class="text-center fw-bold" id="stressVal">5</div>
+          </div>
+          <div class="col-md-6">
+            <label for="productivity" class="form-label">Productivity Level (1 = very low, 10 = very high)</label>
+            <input type="range" class="form-range mt-2" id="productivity" name="productivity" min="1" max="10" value="5" oninput="prodVal.textContent=this.value">
+            <div class="text-center fw-bold" id="prodVal">5</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-mt btn-lg">
+          <i class="bi bi-bar-chart-line me-2"></i>Analyze My Habits
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  document.getElementById('habitForm').addEventListener('submit', function(e) {
+    const fields = this.querySelectorAll('input[type=number]');
+    for (const f of fields) {
+      if (f.value === '' || isNaN(f.value)) {
+        e.preventDefault();
+        f.focus();
+        alert('Please enter a valid number for ' + f.previousElementSibling.textContent);
+        return;
+      }
+    }
+  });
+</script>
+{% endblock %}

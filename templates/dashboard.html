@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}MindfulTech – Dashboard{% endblock %}
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="section-title">Dashboard</h2>
+    {% if entry %}
+    <p class="text-muted mb-4">Your most recent analysis entry.</p>
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="card text-center p-4">
+          <h6 class="text-muted text-uppercase mb-3">Risk Level</h6>
+          <canvas id="riskDonut" width="160" height="160" style="max-width:160px;margin:0 auto"></canvas>
+          <span class="badge-risk {{ entry.risk_level|lower }} mt-3 d-inline-block">{{ entry.risk_level }}</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card stat-card">
+          <div class="stat-icon"><i class="bi bi-heart-pulse"></i></div>
+          <div class="stat-value">{{ entry.wellbeing_score if entry.wellbeing_score else '—' }}</div>
+          <div class="stat-label">Wellbeing Score</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card stat-card">
+          <div class="stat-icon"><i class="bi bi-diagram-3"></i></div>
+          <div class="stat-value" style="font-size:1.15rem">{{ entry.cluster_label if entry.cluster_label else '—' }}</div>
+          <div class="stat-label">User Cluster</div>
+        </div>
+      </div>
+    </div>
+    <div class="row g-3">
+      {% set metrics = [
+        ('bi-phone', 'Screen Time', entry.screen_time, 'hrs'),
+        ('bi-chat-dots', 'Social Media', entry.social_media, 'hrs'),
+        ('bi-controller', 'Gaming', entry.gaming, 'hrs'),
+        ('bi-moon-stars', 'Night Usage', entry.night_usage, 'hrs'),
+        ('bi-alarm', 'Sleep', entry.sleep, 'hrs'),
+        ('bi-book', 'Focus Time', entry.focus_time, 'hrs'),
+        ('bi-person-walking', 'Exercise', entry.exercise, 'min'),
+        ('bi-emoji-neutral', 'Stress', entry.stress, '/10'),
+        ('bi-lightning', 'Productivity', entry.productivity, '/10'),
+      ] %}
+      {% for icon, label, value, unit in metrics %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card stat-card">
+          <div class="stat-icon"><i class="bi {{ icon }}"></i></div>
+          <div class="stat-value">{{ value }}<small style="font-size:.55em;font-weight:500">{{ unit }}</small></div>
+          <div class="stat-label">{{ label }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <i class="bi bi-clipboard-data" style="font-size:4rem;color:var(--mt-primary-light)"></i>
+      <h4 class="mt-3">No Data Yet</h4>
+      <p class="text-muted">Submit your first digital-habit entry to see your dashboard.</p>
+      <a href="{{ url_for('analyze') }}" class="btn btn-mt mt-2">Analyze My Habits</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+{% if entry %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    renderRiskDonut('riskDonut', '{{ entry.risk_level }}');
+  });
+</script>
+{% endif %}
+{% endblock %}

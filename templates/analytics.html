@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}MindfulTech – Analytics{% endblock %}
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="section-title">Analytics</h2>
+    <p class="text-muted mb-4">Historical trends from your past habit entries. Submit multiple analyses to see trends build up.</p>
+    <div id="no-data-msg" class="text-center py-5 d-none">
+      <i class="bi bi-graph-up" style="font-size:3rem;color:var(--mt-primary-light)"></i>
+      <h5 class="mt-3">No Data Yet</h5>
+      <p class="text-muted">Submit at least one analysis to see charts here.</p>
+      <a href="{{ url_for('analyze') }}" class="btn btn-mt">Analyze My Habits</a>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Screen Time Trend</h6>
+          <div style="height:260px"><canvas id="screenTimeChart"></canvas></div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Social Media Usage</h6>
+          <div style="height:260px"><canvas id="socialMediaChart"></canvas></div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Focus Time</h6>
+          <div style="height:260px"><canvas id="focusTimeChart"></canvas></div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Sleep Duration</h6>
+          <div style="height:260px"><canvas id="sleepChart"></canvas></div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Productivity Level</h6>
+          <div style="height:260px"><canvas id="productivityChart"></canvas></div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Risk Level Trend</h6>
+          <div style="height:260px"><canvas id="riskChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', renderAnalyticsCharts);
+</script>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}MindfulTech – Results{% endblock %}
+{% block content %}
+<section class="py-5">
+  <div class="container" style="max-width:860px">
+    <h2 class="section-title">Digital Wellbeing Analysis</h2>
+    <div class="disclaimer mb-4">
+      <i class="bi bi-info-circle me-1"></i>
+      This is a <strong>machine-learning-based behavioural risk indicator</strong>, not a medical or psychological diagnosis.
+    </div>
+    {% if entry %}
+    <div class="risk-display {{ entry.risk_level|lower }} mb-4 animate-in">
+      <p class="text-muted mb-1" style="font-size:.9rem;text-transform:uppercase;letter-spacing:.05em">Risk Level</p>
+      <div class="risk-label">{{ entry.risk_level | upper }}</div>
+      {% if entry.wellbeing_score is not none %}
+      <p class="mt-2 mb-0" style="font-size:1.1rem"><strong>Wellbeing Score:</strong> {{ entry.wellbeing_score }} / 100</p>
+      {% endif %}
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 animate-in delay-1">
+        <div class="cluster-card h-100">
+          <h6 class="text-muted text-uppercase mb-2"><i class="bi bi-diagram-3 me-1"></i>Behavioural Cluster</h6>
+          <div class="cluster-label">{{ entry.cluster_label }}</div>
+          <p class="text-muted mt-2 mb-0" style="font-size:.85rem">
+            This cluster was identified by K-Means analysis of your digital-habit profile.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 animate-in delay-2">
+        <div class="card p-4 h-100">
+          <h6 class="text-muted text-uppercase mb-3"><i class="bi bi-search me-1"></i>Detected Patterns</h6>
+          <ul class="list-unstyled pattern-list mb-0">
+            {% for p in entry.patterns %}
+            <li>{{ p }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 animate-in delay-3">
+        <div class="card p-4">
+          <h6 class="text-muted text-uppercase mb-3"><i class="bi bi-lightbulb me-1"></i>Recommendations</h6>
+          <ul class="list-unstyled rec-list mb-0">
+            {% for r in entry.recommendations %}
+            <li>{{ r }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="{{ url_for('analyze') }}" class="btn btn-mt-outline me-2"><i class="bi bi-arrow-repeat me-1"></i>Analyze Again</a>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-mt"><i class="bi bi-speedometer2 me-1"></i>Go to Dashboard</a>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <p>No results found.</p>
+      <a href="{{ url_for('analyze') }}" class="btn btn-mt">Analyze My Habits</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

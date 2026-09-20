@@ -1,0 +1,74 @@
+{
+  "0": {
+    "label": "High Screen-Time / Entertainment-Heavy / Balanced Lifestyle / Social-Media Heavy",
+    "profile": {
+      "age": 28.5,
+      "screen_time": 10.6,
+      "social_media": 5.8,
+      "gaming": 2.3,
+      "short_video": 3.1,
+      "phone_unlocks": 72.9,
+      "notifications": 221.3,
+      "night_usage": 2.0,
+      "sleep": 7.3,
+      "focus_time": 3.7,
+      "exercise": 68.8,
+      "stress": 5.0,
+      "productivity": 5.7
+    }
+  },
+  "1": {
+    "label": "High Screen-Time / Entertainment-Heavy / High Distraction",
+    "profile": {
+      "age": 27.0,
+      "screen_time": 11.4,
+      "social_media": 2.2,
+      "gaming": 3.9,
+      "short_video": 3.0,
+      "phone_unlocks": 103.3,
+      "notifications": 185.5,
+      "night_usage": 2.3,
+      "sleep": 6.2,
+      "focus_time": 3.6,
+      "exercise": 53.3,
+      "stress": 4.9,
+      "productivity": 5.8
+    }
+  },
+  "2": {
+    "label": "Entertainment-Heavy / High Distraction",
+    "profile": {
+      "age": 35.2,
+      "screen_time": 6.1,
+      "social_media": 2.7,
+      "gaming": 2.1,
+      "short_video": 3.6,
+      "phone_unlocks": 102.0,
+      "notifications": 146.4,
+      "night_usage": 2.5,
+      "sleep": 6.9,
+      "focus_time": 3.9,
+      "exercise": 62.9,
+      "stress": 6.1,
+      "productivity": 4.4
+    }
+  },
+  "3": {
+    "label": "Entertainment-Heavy / High Distraction / Social-Media Heavy",
+    "profile": {
+      "age": 29.2,
+      "screen_time": 5.8,
+      "social_media": 5.3,
+      "gaming": 3.6,
+      "short_video": 2.4,
+      "phone_unlocks": 133.8,
+      "notifications": 187.2,
+      "night_usage": 3.1,
+      "sleep": 5.8,
+      "focus_time": 4.9,
+      "exercise": 54.3,
+      "stress": 5.9,
+      "productivity": 6.3
+    }
+  }
+}

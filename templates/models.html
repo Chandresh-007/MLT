@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}MindfulTech - ML Models{% endblock %}
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="section-title">Machine Learning Models</h2>
+    <p class="text-muted mb-2">This page demonstrates the ML techniques used in MindfulTech. All models were trained on the project's digital-habit dataset using Scikit-learn.</p>
+    <div class="disclaimer mb-4"><i class="bi bi-info-circle me-1"></i>The metrics below were computed on a held-out 20% test set using stratified splitting.</div>
+    <h4 class="mt-4 mb-3">Classification Algorithms</h4>
+    <div class="row g-4 mb-4">
+      {% set algos = [
+        ('Logistic Regression', 'bi-graph-up', 'A linear model estimating class probabilities using a sigmoid function as baseline for multi-class classification.'),
+        ('Decision Tree', 'bi-diagram-2', 'A tree-structured model learning interpretable decision rules from features.'),
+        ('Random Forest', 'bi-trees', 'An ensemble of decision trees trained on random feature subsets to reduce overfitting and maximize accuracy.'),
+        ('SVM', 'bi-bezier2', 'Support Vector Machine finding optimal separating hyperplanes with RBF kernel mapping.'),
+      ] %}
+      {% for name, icon, desc in algos %}
+      <div class="col-md-6">
+        <div class="card p-3 h-100">
+          <h5><i class="bi {{ icon }} me-2" style="color:var(--mt-primary)"></i>{{ name }}</h5>
+          <p class="text-muted mb-0">{{ desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <h4 class="mb-3">K-Means Clustering</h4>
+    <div class="card p-4 mb-4">
+      <p class="mb-3">K-Means (k=4) groups users into behavioural clusters based on feature profiles. Cluster labels are dynamically derived from centroid characteristics.</p>
+      {% if clusters %}
+      <div class="row g-3">
+        {% for cid, info in clusters.items() %}
+        <div class="col-md-6">
+          <div class="cluster-card">
+            <span class="badge bg-secondary mb-1">Cluster {{ cid }}</span>
+            <div class="cluster-label">{{ info.label }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-muted mb-0">Cluster descriptions will appear here after model training.</p>
+      {% endif %}
+    </div>
+    <h4 class="mb-3">Model Evaluation Metrics</h4>
+    {% if metrics %}
+    <div class="table-responsive mb-4">
+      <table class="table table-bordered metrics-table text-center align-middle">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Accuracy</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1-Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name, m in metrics.items() %}
+          <tr>
+            <td class="text-start fw-semibold">{{ name }}</td>
+            <td>{{ "%.2f"|format(m.accuracy * 100) }}%</td>
+            <td>{{ "%.2f"|format(m.precision * 100) }}%</td>
+            <td>{{ "%.2f"|format(m.recall * 100) }}%</td>
+            <td>{{ "%.2f"|format(m.f1_score * 100) }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <h4 class="mb-3">Model Comparison Chart</h4>
+    <div class="chart-container mb-4">
+      <div style="height:320px"><canvas id="modelCompareChart"></canvas></div>
+    </div>
+    {% else %}
+    <p class="text-muted">Metrics will appear here after model training and evaluation.</p>
+    {% endif %}
+    <h4 class="mb-3">Confusion Matrices</h4>
+    <div class="row g-4 mb-4">
+      {% set cms = [
+        ('Logistic Regression', 'logistic_model_cm.png'),
+        ('Decision Tree', 'decision_tree_model_cm.png'),
+        ('Random Forest', 'random_forest_model_cm.png'),
+        ('SVM', 'svm_model_cm.png'),
+      ] %}
+      {% for name, img in cms %}
+      <div class="col-md-6">
+        <div class="card p-3 text-center">
+          <h6>{{ name }}</h6>
+          <img src="{{ url_for('static', filename='img/' + img) }}" alt="{{ name }} Confusion Matrix" class="img-fluid rounded" onerror="this.parentElement.innerHTML='<p class=text-muted>Image will appear after model evaluation.</p>'">
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <h4 class="mb-3">Optional: Linear Regression</h4>
+    <div class="card p-4">
+      <p class="mb-0">A Linear Regression model is also trained to predict a continuous <strong>Wellbeing Score (0-100)</strong>, demonstrating regression alongside classification in the same pipeline.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+{% if metrics %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('modelCompareChart');
+  if (!el) return;
+  const metrics = {{ metrics | tojson }};
+  const names = Object.keys(metrics);
+  new Chart(el.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: names,
+      datasets: [
+        { label: 'Accuracy', data: names.map(n => metrics[n].accuracy), backgroundColor: 'rgba(13,148,136,.75)' },
+        { label: 'Precision', data: names.map(n => metrics[n].precision), backgroundColor: 'rgba(99,102,241,.75)' },
+        { label: 'Recall', data: names.map(n => metrics[n].recall), backgroundColor: 'rgba(34,197,94,.75)' },
+        { label: 'F1-Score', data: names.map(n => metrics[n].f1_score), backgroundColor: 'rgba(245,158,11,.75)' },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { beginAtZero: true, max: 1.05, grid: { color: 'rgba(0,0,0,.06)' } },
+        x: { grid: { display: false } },
+      },
+      plugins: { legend: { position: 'top' } },
+    },
+  });
+});
+</script>
+{% endif %}
+{% endblock %}

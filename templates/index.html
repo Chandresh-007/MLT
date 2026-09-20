@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}MindfulTech – Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container position-relative" style="z-index:1">
+    <h1 class="animate-in">MindfulTech</h1>
+    <p class="lead animate-in delay-1">ML-Based Digital Habit &amp; Wellbeing Platform</p>
+    <p class="animate-in delay-2" style="max-width:600px;margin:0 auto 1.5rem;">
+      Understand your digital usage patterns through machine learning.
+      Get personalised behavioural insights and practical wellbeing suggestions.
+    </p>
+    <a href="{{ url_for('analyze') }}" class="btn btn-mt btn-lg animate-in delay-3">
+      <i class="bi bi-bar-chart-line me-2"></i>Analyze My Digital Habits
+    </a>
+  </div>
+</section>
+<section class="py-5">
+  <div class="container">
+    <h2 class="section-title text-center d-block mb-5">How It Works</h2>
+    <div class="row g-4">
+      <div class="col-md-4 animate-in delay-1">
+        <div class="card h-100 text-center p-4">
+          <div class="stat-icon"><i class="bi bi-pencil-square"></i></div>
+          <h5>1. Enter Your Habits</h5>
+          <p class="text-muted">Fill in your daily screen time, social media usage, sleep, focus, and other digital habit metrics.</p>
+        </div>
+      </div>
+      <div class="col-md-4 animate-in delay-2">
+        <div class="card h-100 text-center p-4">
+          <div class="stat-icon"><i class="bi bi-cpu"></i></div>
+          <h5>2. Machine Learning Analysis</h5>
+          <p class="text-muted">Our trained ML models analyse your input to classify behavioural patterns and predict digital-wellbeing risk.</p>
+        </div>
+      </div>
+      <div class="col-md-4 animate-in delay-3">
+        <div class="card h-100 text-center p-4">
+          <div class="stat-icon"><i class="bi bi-lightbulb"></i></div>
+          <h5>3. Get Insights</h5>
+          <p class="text-muted">View your risk level, detected patterns, behavioural cluster, and personalised wellbeing recommendations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="py-5" style="background:#fff">
+  <div class="container" style="max-width:720px">
+    <h2 class="section-title">Project Purpose</h2>
+    <p>
+      <strong>MindfulTech</strong> is a college-level <em>Machine Learning Techniques</em> project that
+      demonstrates a full ML workflow — from data collection and preprocessing to model training,
+      evaluation, and real-time prediction.
+    </p>
+    <p>
+      The platform helps users reflect on observable digital habits such as screen time,
+      social-media usage, sleep patterns, and focus hours. It uses multiple classification algorithms
+      (Logistic Regression, Decision Tree, Random Forest, SVM) alongside K-Means clustering
+      to provide behavioural insights.
+    </p>
+    <div class="disclaimer mt-3">
+      <strong>Disclaimer:</strong> MindfulTech provides behavioural indicators based on machine-learning analysis.
+      It is <em>not</em> a medical or psychological diagnostic tool.
+    </div>
+  </div>
+</section>
+<section class="py-5 text-center">
+  <div class="container">
+    <h3>Ready to explore your digital habits?</h3>
+    <a href="{{ url_for('analyze') }}" class="btn btn-mt mt-3">
+      <i class="bi bi-arrow-right-circle me-1"></i> Get Started
+    </a>
+  </div>
+</section>
+{% endblock %}
