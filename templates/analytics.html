@@ -12,6 +12,7 @@
       <a href="{{ url_for('analyze') }}" class="btn btn-mt">Analyze My Habits</a>
     </div>
     <div class="row g-4">
+      {# --- Line / bar charts --- #}
       <div class="col-md-6">
         <div class="chart-container">
           <h6 class="mb-3">Screen Time Trend</h6>
@@ -46,6 +47,19 @@
         <div class="chart-container">
           <h6 class="mb-3">Risk Level Trend</h6>
           <div style="height:260px"><canvas id="riskChart"></canvas></div>
+        </div>
+      </div>
+      {# --- Scatter charts --- #}
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Screen Time vs Focus Time</h6>
+          <div style="height:260px"><canvas id="scatterScreenFocus"></canvas></div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Sleep vs Productivity</h6>
+          <div style="height:260px"><canvas id="scatterSleepProd"></canvas></div>
         </div>
       </div>
     </div>

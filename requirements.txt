@@ -2,6 +2,7 @@ flask
 pandas
 numpy
 scikit-learn
-matplotlib
-seaborn
 joblib
+python-dotenv
+# AWS SDK (for S3 and Bedrock integration)
+boto3

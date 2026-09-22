@@ -6,6 +6,18 @@
     <h2 class="section-title">Dashboard</h2>
     {% if entry %}
     <p class="text-muted mb-4">Your most recent analysis entry.</p>
+
+    {# --- Anomaly alert --- #}
+    {% if entry.is_anomaly %}
+    <div class="alert alert-warning d-flex align-items-start mb-4" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2 mt-1" style="font-size:1.2rem"></i>
+      <div>
+        <strong>Unusual Pattern Detected</strong> — {{ entry.anomaly_message or 'Your usage is statistically unusual compared with typical patterns.' }}
+      </div>
+    </div>
+    {% endif %}
+
+    {# --- Top summary cards --- #}
     <div class="row g-4 mb-4">
       <div class="col-md-4">
         <div class="card text-center p-4">
@@ -29,11 +41,14 @@
         </div>
       </div>
     </div>
-    <div class="row g-3">
+
+    {# --- Metric cards --- #}
+    <div class="row g-3 mb-4">
       {% set metrics = [
         ('bi-phone', 'Screen Time', entry.screen_time, 'hrs'),
         ('bi-chat-dots', 'Social Media', entry.social_media, 'hrs'),
         ('bi-controller', 'Gaming', entry.gaming, 'hrs'),
+        ('bi-play-circle', 'Short Videos', entry.short_video, 'hrs'),
         ('bi-moon-stars', 'Night Usage', entry.night_usage, 'hrs'),
         ('bi-alarm', 'Sleep', entry.sleep, 'hrs'),
         ('bi-book', 'Focus Time', entry.focus_time, 'hrs'),
@@ -51,6 +66,23 @@
       </div>
       {% endfor %}
     </div>
+
+    {# --- Trend charts --- #}
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Screen Time Trend</h6>
+          <div style="height:240px"><canvas id="dashScreenTrend"></canvas></div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h6 class="mb-3">Focus Time Trend</h6>
+          <div style="height:240px"><canvas id="dashFocusTrend"></canvas></div>
+        </div>
+      </div>
+    </div>
+
     {% else %}
     <div class="text-center py-5">
       <i class="bi bi-clipboard-data" style="font-size:4rem;color:var(--mt-primary-light)"></i>
@@ -67,6 +99,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     renderRiskDonut('riskDonut', '{{ entry.risk_level }}');
+    renderDashboardTrends();
   });
 </script>
 {% endif %}

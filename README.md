@@ -1,216 +1,467 @@
 # MindfulTech – ML-Based Digital Habit & Wellbeing Platform
 
-> An educational Machine Learning project that analyses digital usage patterns and identifies potentially unhealthy or disruptive digital behaviour using ML techniques.
+> An educational Machine Learning project that analyses digital usage patterns and identifies potentially unhealthy or disruptive digital behaviour using modern ML techniques.
 
 ---
 
 ## Problem Statement
 
-Excessive or unstructured digital device usage can disrupt sleep, focus, and overall wellbeing. However, most people lack an objective way to assess their own digital habits. MindfulTech addresses this by applying machine learning to self-reported digital-habit data to classify behavioural risk levels and provide actionable recommendations.
+Excessive or unstructured digital device usage can disrupt sleep, focus, physical health, and overall daily wellbeing. However, most individuals lack an objective, data-driven way to evaluate their digital habits. MindfulTech addresses this challenge by applying machine learning algorithms to self-reported digital-habit data to classify behavioural risk levels, discover behavioral clusters, flag statistically unusual usage, and provide actionable wellbeing recommendations.
 
 ## Motivation
 
-- Rising screen-time averages across all age groups.
-- Digital wellbeing is a growing area of academic interest.
-- Demonstrates a full ML pipeline suitable for a college-level project.
+- Increasing daily screen-time averages across all demographics, particularly students and young professionals.
+- Growing academic interest in digital wellbeing, habit formation, and behavioral analytics.
+- Demonstrates a complete, modular, end-to-end Machine Learning pipeline suitable for a university-level computer science / ML curriculum.
 
 ## Objectives
 
-1. Collect digital habit data through a web form.
-2. Preprocess and validate the data.
-3. Train and compare multiple ML classification models.
-4. Use K-Means clustering to identify digital-usage pattern groups.
-5. Predict a user's digital-wellbeing risk level (Low / Moderate / High).
-6. Present results, detected patterns, and wellbeing recommendations.
-7. Display historical analytics with interactive charts.
-8. Provide an academic model-comparison page with evaluation metrics.
+1. **Data Collection & Ingestion**: Collect structured digital habit metrics via an intuitive web interface.
+2. **Feature Engineering**: Derive domain-specific composite metrics from raw digital habit indicators.
+3. **Multi-Model Classification**: Train, evaluate, and benchmark multiple ML classifiers (Logistic Regression, Decision Tree, Random Forest, Support Vector Machine).
+4. **Stratified Cross-Validation**: Assess model generalization using 5-fold stratified cross-validation.
+5. **Behavioral Clustering**: Discover latent usage personas using K-Means clustering ($k=4$) with dynamic centroid labeling.
+6. **Anomaly Detection**: Flag statistically unusual digital behavior patterns using Isolation Forest.
+7. **Regression Scoring**: Estimate a continuous digital wellbeing score (0–100) using Linear Regression.
+8. **Recommendation Engine**: Generate tailored, non-medical recommendations and natural language explanations (with optional AWS Bedrock integration).
+9. **Interactive Dashboard & History**: Track personal habit evolution, visualize trends, and review historical assessments stored in SQLite.
+10. **Exploratory Analysis Notebook**: Provide a comprehensive 22-section Jupyter notebook detailing the entire ML workflow.
 
-## Features
+---
 
-- **Digital Habit Input Form** – 13 behavioural features (screen time, social media, gaming, sleep, focus, exercise, stress, productivity, etc.)
-- **ML Prediction** – Risk-level classification using Random Forest (or any trained model)
-- **Wellbeing Score** – Continuous score (0–100) via Linear Regression
-- **Behavioural Clustering** – K-Means (k=4) user-group identification
-- **Pattern Detection** – Rule-based analysis of notable habit patterns
-- **Recommendations** – Non-medical, general wellbeing suggestions
-- **Dashboard** – Latest-entry summary with metric cards
-- **Analytics** – Chart.js trend graphs (screen time, social media, sleep, focus, productivity, risk)
-- **ML Models Page** – Algorithm descriptions, accuracy/precision/recall/F1 table, confusion matrices, model comparison chart
-- **SQLite Database** – Persistent storage of inputs, predictions, and history
+## Key Features
+
+- **Digital Habit Input Form** – Captures 13 primary behavioral indicators (screen time, social media, gaming, short video, phone unlocks, notifications, night usage, sleep, focus time, exercise, stress, productivity, age).
+- **Automated Feature Engineering** – Dynamically computes 6 derived indicators representing recreational ratios, sleep debt, and distraction intensity.
+- **Multi-Model ML Risk Prediction** – Classifies digital wellbeing risk level into **Low**, **Moderate**, or **High** using Random Forest (or any trained classifier).
+- **Continuous Wellbeing Score** – Predicts a continuous score (0–100) via Linear Regression.
+- **Behavioral Clustering** – Groups users into 4 distinct behavioral clusters based on multidimensional feature profiles.
+- **Anomaly Detection** – Utilizes an Isolation Forest model to detect statistically atypical usage patterns.
+- **Modular Recommendation Engine** – Evaluates behavioral rules and generates structured lifestyle suggestions and template-based summaries.
+- **Optional AWS Bedrock Integration** – Hook for generative AI explanations using Amazon Bedrock foundation models with seamless offline fallback.
+- **Personal Dashboard** – Quick-view KPI metrics, status alerts, and trend visualizations.
+- **Interactive Analytics** – Chart.js visualizations including feature distributions, correlation trends, and scatter plots.
+- **Assessment History** – Searchable and date-filterable log of past submissions persisted in SQLite.
+- **Academic ML Comparison Page** – Algorithm breakdown, confusion matrices, accuracy/precision/recall/F1 metrics, and cross-validation performance.
+- **Jupyter Notebook** – 22 structured sections documenting EDA, feature engineering, model training, evaluation, and clustering.
+
+---
 
 ## Technology Stack
 
-| Layer     | Tools                                            |
-|-----------|--------------------------------------------------|
-| Frontend  | HTML5, CSS3, JavaScript, Bootstrap 5, Chart.js   |
-| Backend   | Python, Flask                                    |
-| ML        | Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn |
-| Storage   | SQLite                                           |
-| Misc      | Joblib (model serialisation)                     |
+| Layer | Technologies |
+|---|---|
+| **Frontend** | HTML5, CSS3, JavaScript (ES6+), Bootstrap 5, Bootstrap Icons, Chart.js |
+| **Backend** | Python 3.9+, Flask, Jinja2 |
+| **Machine Learning** | Scikit-learn, NumPy, Pandas, Joblib |
+| **Data Visualization** | Matplotlib, Seaborn, Chart.js |
+| **Database** | SQLite3 |
+| **GenAI (Optional)** | AWS Bedrock (`boto3`, `python-dotenv`) |
+| **Notebook** | Jupyter (`nbformat`) |
 
-## Dataset Description
+---
 
-The project uses a **synthetic dataset** of **1,500 records** generated by `data/generate_dataset.py`.
+## Dataset Description & Methodology
 
-### Features (13 inputs)
+The project uses a **synthetic dataset** of **2,000 records** generated by `data/generate_dataset.py`.
 
-| Feature | Description | Range |
-|---------|-------------|-------|
-| age | User age | 16–44 |
-| screen_time | Total daily screen hours | 1–16 |
-| social_media | Social-media hours | 0–8 |
-| gaming | Gaming hours | 0–6 |
-| short_video | Short-video hours | 0–6 |
-| phone_unlocks | Daily phone unlocks | 10–200 |
-| notifications | Daily notifications | 20–350 |
-| night_usage | Night-time screen hours | 0–5 |
-| sleep | Sleep duration (hours) | 3–10 |
-| focus_time | Focus/study hours | 0–8 |
-| exercise | Exercise minutes | 0–120 |
-| stress | Self-reported stress (1–10) | 1–10 |
-| productivity | Self-reported productivity (1–10) | 1–10 |
+> [!IMPORTANT]
+> **Academic Integrity Notice**: This dataset is synthetic and was algorithmically generated for educational and experimental purposes. It must not be cited or presented as real-world clinical survey data.
 
-### Targets
+### 1. Primary Features (13 Inputs)
 
-- **risk_level** – Categorical: Low, Moderate, High (derived from weighted feature rules)
-- **wellbeing_score** – Continuous: 0–100 (derived heuristic)
+| Feature | Type | Range | Description |
+|---|---|---|---|
+| `age` | Integer | 16–44 | User's age in years |
+| `screen_time` | Float | 1.0–16.0 | Total daily screen time in hours |
+| `social_media` | Float | 0.0–8.0 | Daily social media consumption in hours |
+| `gaming` | Float | 0.0–6.0 | Daily gaming duration in hours |
+| `short_video` | Float | 0.0–6.0 | Daily short-form video consumption (Reels, TikTok) in hours |
+| `phone_unlocks` | Integer | 10–200 | Total number of phone unlocks per day |
+| `notifications` | Integer | 20–350 | Daily notification count |
+| `night_usage` | Float | 0.0–5.0 | Screen time between 11:00 PM and 6:00 AM in hours |
+| `sleep` | Float | 3.0–10.0 | Daily sleep duration in hours |
+| `focus_time` | Float | 0.0–8.0 | Deep work or study hours without screen distraction |
+| `exercise` | Integer | 0–120 | Physical activity duration in minutes per day |
+| `stress` | Integer | 1–10 | Self-reported stress scale (1 = minimal, 10 = extreme) |
+| `productivity` | Integer | 1–10 | Self-reported productivity scale (1 = lowest, 10 = highest) |
 
-> **Important:** This dataset is synthetic and created for educational purposes. It must not be presented as real-world survey data.
+### 2. Derived Features (6 Engineered Features)
 
-## ML Algorithms
+Feature engineering computes 6 composite metrics from the primary features to capture higher-order behavioral interactions:
 
-### Classification (risk_level)
-1. Logistic Regression
-2. Decision Tree Classifier
-3. Random Forest Classifier
-4. Support Vector Machine (SVM with RBF kernel)
+| Derived Feature | Formula | Rationale |
+|---|---|---|
+| `entertainment_hours` | $\text{gaming} + \text{short\_video}$ | Combines high-stimulus entertainment activities. |
+| `total_recreational_screen_time` | $\text{social\_media} + \text{gaming} + \text{short\_video}$ | Measures total leisure screen consumption. |
+| `night_usage_ratio` | $\text{clamp}\left(\frac{\text{night\_usage}}{\text{screen\_time}}, 0, 1\right)$ | Quantifies proportion of digital usage occurring during sleep hours. |
+| `focus_to_screen_ratio` | $\text{clamp}\left(\frac{\text{focus\_time}}{\text{screen\_time}}, 0, 1\right)$ | Assesses productive versus passive device utilization. |
+| `sleep_deficit_indicator` | $\max(0, 7.5 - \text{sleep})$ | Quantifies sleep debt relative to recommended 7.5-hour baseline. |
+| `usage_intensity` | $\text{phone\_unlocks} + \frac{\text{notifications}}{10.0}$ | Composite metric of fragmentation and notification bombardment. |
 
-### Clustering
-5. K-Means (k=4)
+**Total Feature Space**: 19 numeric features used for model training and inference.
 
-### Regression (optional)
-6. Linear Regression (wellbeing_score)
+### 3. Risk Label Generation & Noise Injection
 
-## ML Workflow
+To generate realistic ground truth without allowing models to simply memorize deterministic rules, the dataset applies a weighted behavioral scoring function with **Gaussian noise jitter**:
+
+1. **Raw Risk Score Calculation**:
+   - `screen_time > 10h` (+3) / `> 6h` (+1.5)
+   - `social_media > 5h` (+2.5) / `> 3h` (+1.0)
+   - `gaming > 4h` (+2) / `> 2h` (+0.8)
+   - `short_video > 4h` (+2) / `> 2h` (+0.8)
+   - `phone_unlocks > 120` (+2) / `> 70` (+1.0)
+   - `notifications > 250` (+1.5) / `> 150` (+0.5)
+   - `night_usage > 3h` (+2.5) / `> 1.5h` (+1.0)
+   - `sleep < 5h` (+2.5) / `< 6.5h` (+1.0)
+   - `focus_time < 1.5h` (+2) / `< 3h` (+0.8)
+   - `exercise < 15min` (+1.5) / `< 30min` (+0.5)
+   - `stress > 7` (+2) / `> 5` (+0.8)
+   - `productivity < 4` (+2) / `< 6` (+0.8)
+2. **Noise Jitter**:
+   $$\text{Score}_{\text{noisy}} = \text{Score}_{\text{raw}} + \mathcal{N}(\mu=0, \sigma=2.0)$$
+3. **Threshold Classification**:
+   - **High Risk**: $\text{Score}_{\text{noisy}} \ge 13.0$
+   - **Moderate Risk**: $7.0 \le \text{Score}_{\text{noisy}} < 13.0$
+   - **Low Risk**: $\text{Score}_{\text{noisy}} < 7.0$
+
+### 4. Wellbeing Score (Continuous Target)
+
+$$\text{Wellbeing Score} = \text{clamp}\left(50 + 2 \cdot \min(\text{sleep}, 8) + 2 \cdot \min(\text{focus}, 6) + 0.1 \cdot \text{exercise} + 1.5 \cdot \text{prod} - 1.5 \cdot \text{stress} - 1.2 \cdot \text{screen} - 1.5 \cdot \text{night} - 1.0 \cdot \text{social} - 0.8 \cdot (\text{game} + \text{short}), 0, 100\right)$$
+
+---
+
+## Machine Learning Pipeline
 
 ```
-CSV Dataset
-    ↓
-Data Preprocessing (missing values, validation, scaling)
-    ↓
-Train/Test Split (80/20, stratified)
-    ↓
-Model Training (4 classifiers + K-Means + regression)
-    ↓
-Evaluation (accuracy, precision, recall, F1, confusion matrix)
-    ↓
-Save Models (Joblib .pkl files)
-    ↓
-Inference (user input → scale → predict → patterns → recommendations)
+Raw User Input (13 features) / Synthetic Generator
+                       │
+                       ▼
+Feature Engineering (Compute 6 Derived Features → 19 total)
+                       │
+                       ▼
+Data Preprocessing (Robust validation, StandardScaler)
+                       │
+         ┌─────────────┼─────────────┬─────────────┐
+         ▼             ▼             ▼             ▼
+   Classification   Clustering   Regression   Anomaly Detection
+  (Random Forest,   (K-Means,     (Linear       (Isolation
+   SVM, DT, LR)        k=4)      Regression)     Forest)
+         │             │             │             │
+         ▼             ▼             ▼             ▼
+     Risk Level     Cluster      Wellbeing     Unusual Pattern
+   (Low/Mod/High)   Persona     Score (0-100)       Flag
+         └─────────────┼─────────────┴─────────────┘
+                       │
+                       ▼
+Recommendation Engine (Rule-based suggestions + Natural language explanation)
+                       │
+                       ▼
+Web Presentation (Dashboard, Results, Analytics, History, SQLite)
 ```
 
-## Evaluation Metrics
+### Models Implemented
 
-All classification models are evaluated on the held-out 20% test set using:
+1. **Random Forest Classifier** (`random_forest_model.pkl`): Primary classifier; robust ensemble method combining decision trees with bagging.
+2. **Support Vector Machine** (`svm_model.pkl`): Non-linear decision boundaries using Radial Basis Function (RBF) kernel.
+3. **Decision Tree Classifier** (`decision_tree_model.pkl`): Transparent, interpretable tree-based classification.
+4. **Logistic Regression** (`logistic_model.pkl`): Linear classification baseline with L2 regularization.
+5. **K-Means Clustering** (`kmeans_model.pkl`): Unsupervised clustering ($k=4$) to discover usage personas:
+   - *Mindful / Balanced*
+   - *Productive / High Focus*
+   - *Entertainment-Heavy / High Distraction*
+   - *High-Stress / Sleep-Deprived*
+6. **Isolation Forest** (`isolation_forest.pkl`): Unsupervised anomaly detection identifying statistical outliers in habit combinations.
+7. **Linear Regression** (`linear_regression_model.pkl`): Estimates continuous wellbeing score.
 
-- **Accuracy** – Overall correct predictions / total predictions
-- **Precision** – Correct positive predictions / total positive predictions (weighted)
-- **Recall** – Correct positive predictions / total actual positives (weighted)
-- **F1-Score** – Harmonic mean of precision and recall (weighted)
-- **Confusion Matrix** – Per-class prediction breakdown
+---
 
-Results are saved to `models/model_metrics.json` and visualised on the ML Models page.
+## Model Evaluation & Validation
 
-## How to Install
+All classification models undergo rigorous evaluation:
 
-### Prerequisites
-- Python 3.9 or later
-- pip
+- **Train/Test Split**: 80% training set (1,600 samples), 20% test set (400 samples), stratified by target class.
+- **Evaluation Metrics**:
+  - Accuracy
+  - Weighted & Macro Precision
+  - Weighted & Macro Recall
+  - Weighted & Macro F1-Score
+  - Multi-class Confusion Matrices (saved as PNG visualizations)
+- **5-Fold Stratified Cross-Validation**: Evaluates cross-validation accuracy mean $\pm$ standard deviation to guard against overfitting.
+- Metrics are exported to `models/model_metrics.json` and dynamically loaded on the **ML Models** page.
 
-### Steps
+---
+
+## Recommendation Engine & Explanation Layer
+
+MindfulTech features a dedicated recommendation module (`recommendations/engine.py`):
+
+1. **Pattern Detection**: Identifies specific behavioral issues including excessive screen time, late-night doomscrolling, high notification volume, sleep deprivation, and sedentary routines.
+2. **Rule-Based Guidance**: Delivers actionable, categorized recommendations for immediate behavioral adjustment.
+3. **Natural Language Explanation**: Dynamically synthesizes an intuitive paragraph explaining why the user received their specific risk level and cluster persona.
+4. **Optional AWS Bedrock Integration**:
+   - When AWS credentials and `BEDROCK_MODEL_ID` are configured, calls Claude / Titan models to draft personalized motivational advice.
+   - Operates in offline fallback mode by default, requiring **no cloud credentials** for full project functionality.
+
+---
+
+## Phase 2 – AWS Cloud Architecture
+
+MindfulTech incorporates cloud integration using **Amazon Web Services (AWS)** while strictly preserving the academic core and simplicity of the college Machine Learning project.
+
+```text
+                    AWS
+                     │
+              ┌──────┴──────┐
+              │   EC2       │
+              │ Flask App   │
+              └──────┬──────┘
+                     │
+          ┌──────────┴──────────┐
+          │                     │
+       S3 Bucket            ML Models
+     Dataset/Files          .pkl files
+          │
+          │
+     Scikit-learn
+          │
+          ↓
+   LOW / MODERATE / HIGH
+          │
+          ↓
+      SQLite DB
+```
+
+### AWS Services Breakdown
+
+1. **Amazon EC2**:
+   - Hosts the Flask application on a lightweight Linux instance (Amazon Linux 2023 or Ubuntu 22.04 Free Tier `t2.micro` / `t3.micro`).
+   - Runs directly with Python/systemd without unnecessary Docker or Kubernetes complexity.
+2. **Amazon S3**:
+   - Stores the raw and processed dataset files (`data/dataset.csv`, `data/processed_data.csv`).
+   - Archives trained Scikit-learn `.pkl` models and evaluation `.json` metrics for cloud backup and multi-instance deployment.
+3. **Amazon Bedrock (Optional)**:
+   - Provides an optional post-prediction natural-language explanation layer.
+   - **Important Rule:** Bedrock does *not* perform risk classification. Risk is computed strictly by the local Scikit-learn model.
+   - Guardrails prevent any medical, mental health, or addiction diagnoses.
+   - If AWS credentials or Bedrock are unavailable, the app falls back 100% locally to template explanations.
+4. **SQLite Database**:
+   - Runs as a lightweight local database on the instance, storing user sessions, habit entries, and predictions without the cost or overhead of Amazon RDS.
+
+---
+
+## REST API Endpoints (Phase 2)
+
+In addition to the interactive web frontend, MindfulTech provides RESTful JSON endpoints:
+
+### 1. `POST /api/predict`
+Direct inference using the Scikit-learn model without saving to the database.
+- **Request Body (JSON):**
+  ```json
+  {
+    "age": 22,
+    "screen_time": 9.5,
+    "social_media": 4.0,
+    "gaming": 2.0,
+    "short_video": 2.5,
+    "phone_unlocks": 85,
+    "notifications": 160,
+    "night_usage": 2.5,
+    "sleep": 6.0,
+    "focus_time": 2.5,
+    "exercise": 25,
+    "stress": 6,
+    "productivity": 5
+  }
+  ```
+- **Response (200 OK):**
+  ```json
+  {
+    "status": "success",
+    "prediction": {
+      "risk_level": "Moderate",
+      "wellbeing_score": 63.8,
+      "cluster_label": "High Screen-Time / Balanced Lifestyle",
+      "anomaly": {
+        "is_anomaly": false,
+        "anomaly_score": 0.1008,
+        "anomaly_message": ""
+      },
+      "patterns": ["Above-average daily screen time"],
+      "recommendations": ["Consider reducing recreational screen use before bedtime..."],
+      "explanation": "Your digital wellbeing risk level is classified as Moderate..."
+    }
+  }
+  ```
+
+### 2. `POST /api/analyze`
+Submits habit data, stores the record in SQLite, runs inference, saves the prediction, and returns the persisted record ID.
+- **Request Body (JSON):** Same 13 fields as `/api/predict`.
+- **Response (201 Created):**
+  ```json
+  {
+    "status": "success",
+    "habit_id": 4,
+    "prediction": { ... }
+  }
+  ```
+
+### 3. `GET /api/history`
+Retrieves past habit entries and risk evaluations for the active user session.
+- **Query Parameters:** `limit` (default: 50)
+- **Response (200 OK):**
+  ```json
+  {
+    "status": "success",
+    "count": 1,
+    "history": [ ... ]
+  }
+  ```
+
+### 4. `GET /api/history/<id>`
+Retrieves a specific historical assessment record by its habit ID.
+- **Response (200 OK or 404 Not Found)**
+
+### 5. `GET /api/dashboard`
+Returns aggregated usage KPIs, average metrics, and the latest entry summary.
+- **Response (200 OK):**
+  ```json
+  {
+    "status": "success",
+    "dashboard": {
+      "total_entries": 3,
+      "avg_screen_time": 9.2,
+      "avg_sleep": 6.3,
+      "avg_focus_time": 2.4,
+      "avg_stress": 5.8,
+      "avg_productivity": 5.2,
+      "risk_breakdown": { "Moderate": 2, "High": 1 },
+      "latest_entry": { ... }
+    }
+  }
+  ```
+
+---
+
+## Amazon S3 Synchronization Utility
+
+Use [`scripts/sync_s3.py`](file:///c:/Users/chand/Documents/MLT/scripts/sync_s3.py) to upload and download datasets and trained models:
 
 ```bash
-# 1. Clone or download the project
-cd mindfultech
+# Check connection and bucket contents:
+python scripts/sync_s3.py --status
 
-# 2. Create a virtual environment (recommended)
-python -m venv venv
-venv\Scripts\activate        # Windows
-# source venv/bin/activate   # macOS/Linux
+# Upload local dataset and trained models to S3:
+python scripts/sync_s3.py --upload
 
-# 3. Install dependencies
-pip install -r requirements.txt
+# Download models and dataset from S3 (e.g., after launching a new EC2 instance):
+python scripts/sync_s3.py --download
 ```
 
-## How to Run
+---
 
+## Amazon EC2 Deployment Guide
+
+A deployment automation script is provided in [`scripts/ec2_setup.sh`](file:///c:/Users/chand/Documents/MLT/scripts/ec2_setup.sh).
+
+### 1. Launch Instance
+- Select **Amazon Linux 2023** or **Ubuntu 22.04 LTS** (Free Tier eligible `t2.micro` or `t3.micro`).
+- In the **Security Group**, configure:
+  - Inbound SSH (Port 22) from your IP.
+  - Inbound Custom TCP (Port 5000) from anywhere or your IP.
+  - Inbound HTTP (Port 80) if using reverse proxy.
+- *(Recommended)* Attach an IAM Role with `AmazonS3ReadOnlyAccess` to allow S3 model downloads without putting API keys on the server.
+
+### 2. Run Setup on EC2
+Connect to your EC2 instance via SSH:
 ```bash
-# Step 1: Generate the synthetic dataset
-python data/generate_dataset.py
+# Clone the repository
+git clone https://github.com/Chandresh-007/MLT.git
+cd MLT
 
-# Step 2: Train all ML models
-python ml/train_models.py
+# Run the automated setup script
+chmod +x scripts/ec2_setup.sh
+./scripts/ec2_setup.sh
 
-# Step 3: Evaluate models and generate metrics/charts
-python ml/evaluate_models.py
-
-# Step 4: Start the Flask web application
-python app.py
+# Start the application
+python main.py
 ```
+MindfulTech will be live and accessible at: `http://<your-ec2-public-ip>:5000`
 
-Then open your browser at: **http://localhost:5000**
+---
 
 ## Project Structure
 
 ```
 mindfultech/
 │
-├── app.py                    # Flask application (all routes)
-├── requirements.txt          # Python dependencies
-├── README.md                 # This file
+├── app.py                         # Flask web application & REST API routing
+├── main.py                        # Main entry point (python main.py)
+├── requirements.txt               # Python package dependencies (including boto3)
+├── README.md                      # Comprehensive project documentation
+├── .env.example                   # Environment configuration template (AWS & S3)
+├── .gitignore                     # Git ignore rules
 │
-├── database/
-│   ├── db.py                 # SQLite helpers
-│   └── mindfultech.db        # Database (auto-created)
+├── aws/                           # Phase 2 AWS integration package
+│   ├── __init__.py                # AWS package exports
+│   ├── s3_utils.py                # S3 dataset & model upload/download utilities
+│   └── bedrock_utils.py           # Optional Bedrock post-prediction explanation layer
+│
+├── scripts/                       # Automation & cloud deployment scripts
+│   ├── sync_s3.py                 # S3 CLI synchronization tool (--upload/--download/--status)
+│   └── ec2_setup.sh               # Amazon EC2 automated Linux setup script
 │
 ├── data/
-│   ├── generate_dataset.py   # Synthetic data generator
-│   ├── dataset.csv           # Generated dataset
-│   └── processed_data.csv    # Preprocessed dataset
+│   ├── generate_dataset.py        # Synthetic dataset generator (2,000 rows)
+│   ├── dataset.csv                # Raw generated dataset
+│   └── processed_data.csv         # Scaled preprocessed dataset
 │
-├── models/
-│   ├── logistic_model.pkl
-│   ├── decision_tree_model.pkl
-│   ├── random_forest_model.pkl
-│   ├── svm_model.pkl
-│   ├── kmeans_model.pkl
-│   ├── linear_regression_model.pkl
-│   ├── scaler.pkl
-│   ├── label_encoder.pkl
-│   ├── cluster_descriptions.json
-│   └── model_metrics.json
+├── database/
+│   ├── db.py                      # SQLite connection, schema, queries & KPIs
+│   └── mindfultech.db             # Local SQLite database file (auto-created)
 │
 ├── ml/
-│   ├── preprocessing.py      # Data cleaning & scaling
-│   ├── train_models.py       # Model training pipeline
-│   ├── evaluate_models.py    # Evaluation & visualisation
-│   └── prediction.py         # Inference module
+│   ├── preprocessing.py           # Feature engineering, scaling & label encoding
+│   ├── train_models.py            # Training pipeline (classifiers, kmeans, regression, anomaly)
+│   ├── evaluate_models.py         # 5-fold cross-val, test metrics & confusion matrices
+│   ├── anomaly_detection.py       # Isolation Forest anomaly scoring module
+│   └── prediction.py              # Unified inference engine
+│
+├── recommendations/
+│   └── engine.py                  # Recommendation engine, explanation coordinator & Bedrock hook
+│
+├── notebooks/
+│   └── exploratory_analysis.ipynb # 22-section Jupyter notebook covering complete ML workflow
+│
+├── models/
+│   ├── logistic_model.pkl         # Trained Logistic Regression
+│   ├── decision_tree_model.pkl    # Trained Decision Tree
+│   ├── random_forest_model.pkl    # Trained Random Forest
+│   ├── svm_model.pkl              # Trained Support Vector Machine
+│   ├── kmeans_model.pkl           # Trained K-Means Clusterer
+│   ├── isolation_forest.pkl       # Trained Isolation Forest
+│   ├── linear_regression_model.pkl# Trained Linear Regression
+│   ├── scaler.pkl                 # StandardScaler fitted on 19 features
+│   ├── label_encoder.pkl          # LabelEncoder for risk levels
+│   ├── cluster_descriptions.json  # Centroid-derived cluster personas
+│   └── model_metrics.json         # Performance metrics & 5-fold CV results
 │
 ├── templates/
-│   ├── base.html
-│   ├── index.html            # Home
-│   ├── dashboard.html        # Dashboard
-│   ├── analyze.html          # Habit input form
-│   ├── results.html          # Prediction results
-│   ├── analytics.html        # Historical charts
-│   ├── models.html           # ML model comparison
-│   └── about.html            # About & limitations
+│   ├── base.html                  # Master template with navigation & footer
+│   ├── index.html                 # Landing / welcome page
+│   ├── dashboard.html             # User overview dashboard with KPIs & trend graphs
+│   ├── analyze.html               # 13-feature digital habit submission form
+│   ├── results.html               # Assessment report, score, cluster & recommendations
+│   ├── history.html               # Historical submission table with date filters
+│   ├── analytics.html             # Chart.js analytics & scatter plots
+│   ├── models.html                # Academic ML comparison, metrics & confusion matrices
+│   └── about.html                 # Project rationale, methodology & ethics disclaimer
 │
 └── static/
     ├── css/
-    │   └── style.css
+    │   └── style.css              # Custom styling & responsive layouts
     ├── js/
-    │   └── charts.js
+    │   └── charts.js              # Chart.js initialization & chart rendering helpers
     └── img/
         ├── logistic_model_cm.png
         ├── decision_tree_model_cm.png
@@ -219,23 +470,173 @@ mindfultech/
         └── model_comparison.png
 ```
 
-## Limitations
+---
 
-- This is an **educational project** — predictions are behavioural indicators, not medical or psychological diagnoses.
-- The system does **not** measure dopamine levels, diagnose addiction, or assess mental-health conditions.
-- Recommendations are general wellbeing suggestions, **not** professional medical advice.
-- The synthetic dataset may not reflect real-world population distributions.
-- Model accuracy is constrained by the quality and diversity of the training data.
+## Installation & Setup
 
-## Future Improvements
+### 1. Prerequisites
+- Python 3.9 or higher
+- pip (Python package installer)
 
-- Use a real, ethically collected survey dataset.
-- Add deep-learning models (e.g., MLP classifier).
-- Integrate time-series analysis for longitudinal tracking.
-- Add user authentication for persistent personal dashboards.
-- Implement data export (CSV / PDF).
-- Deploy on a cloud platform for broader access.
+### 2. Clone and Setup Environment
+
+```bash
+# Clone the repository
+git clone https://github.com/Chandresh-007/MLT.git
+cd MLT
+
+# Create a virtual environment
+python -m venv venv
+
+# Activate the virtual environment
+# Windows (PowerShell):
+.\venv\Scripts\Activate.ps1
+# Windows (CMD):
+venv\Scripts\activate.bat
+# macOS / Linux:
+source venv/bin/activate
+
+# Install required dependencies
+pip install -r requirements.txt
+```
+
+### 3. Optional: Configure AWS Bedrock
+
+If you wish to enable generative AI explanations via AWS Bedrock:
+
+```bash
+# Copy template
+cp .env.example .env
+
+# Edit .env and supply your credentials:
+# AWS_ACCESS_KEY_ID=your_access_key
+# AWS_SECRET_ACCESS_KEY=your_secret_key
+# AWS_REGION=us-east-1
+# BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0
+```
+*Note: If no `.env` file is present, the application automatically uses high-quality template-generated explanations.*
 
 ---
 
-*MindfulTech – Machine Learning Techniques Project*
+## Execution Workflow
+
+Run the full pipeline with the following sequence:
+
+```bash
+# 1. Generate the synthetic dataset (2,000 samples with derived features)
+python data/generate_dataset.py
+
+# 2. Train all machine learning models (classifiers, k-means, regression, isolation forest)
+python ml/train_models.py
+
+# 3. Evaluate models, run 5-fold cross validation, and generate charts
+python ml/evaluate_models.py
+
+# 4. Launch the Flask web server
+python app.py
+```
+
+Open your browser and navigate to:
+**http://localhost:5000**
+
+### Running the Jupyter Notebook
+
+To explore the data analysis and training process interactively:
+
+```bash
+pip install jupyter
+jupyter notebook notebooks/exploratory_analysis.ipynb
+```
+
+The notebook contains 22 detailed sections covering:
+1. Library imports
+2. Dataset loading
+3. Dataset overview
+4. Missing values check
+5. Descriptive statistics
+6. Feature distribution visualizations
+7. Correlation heatmaps
+8. Feature engineering
+9. Target class distribution
+10. Stratified train/test splitting
+11. Feature scaling
+12. Logistic Regression
+13. Decision Tree
+14. Random Forest
+15. Support Vector Machine
+16. Comparative model benchmarking
+17. Confusion matrix generation
+18. K-Means clustering (elbow plot & centroid analysis)
+19. Isolation Forest anomaly detection
+20. Model selection rationale
+21. Artifact persistence verification
+22. Academic conclusion & limitations
+
+---
+
+## Vercel Deployment (Serverless Edge Hosting)
+
+MindfulTech is pre-configured for one-click deployment on **Vercel** as a Python Serverless Function (`@vercel/python`).
+
+### How It Works on Vercel
+
+```text
+User Request
+    │
+    ▼
+Vercel Edge Network
+    │
+    ▼
+api/index.py (Serverless WSGI Entrypoint)
+    │
+    ├─► Flask Web Routes & Jinja2 Templates (app.py)
+    ├─► Scikit-Learn Inference Pipeline (ml/prediction.py + models/*.pkl)
+    └─► Serverless SQLite Store (/tmp/mindfultech.db)
+```
+
+1. **WSGI Entrypoint (`api/index.py`)**: Routes all incoming traffic `/(.*)` to the Flask application.
+2. **Read-Only Filesystem Handling (`database/db.py`)**: Automatically falls back to `/tmp/mindfultech.db` in serverless environments, running `init_db()` dynamically so database writes succeed without errors.
+3. **Optimized Function Memory (`vercel.json`)**: Configures 1024 MB memory allocation and 60s execution timeout for responsive ML inference.
+
+### Deploying to Vercel
+
+#### Option 1: Import via Vercel Dashboard (Recommended)
+
+1. Navigate to **[vercel.com/new](https://vercel.com/new)**.
+2. Sign in with GitHub and select repository **`Chandresh-007/MLT`**.
+3. Leave default build settings (`vercel.json` and `api/index.py` configure everything automatically).
+4. Click **Deploy**.
+
+#### Option 2: Deploy via Vercel CLI
+
+```powershell
+# 1. Authenticate with Vercel
+npx vercel login
+
+# 2. Deploy directly to production
+npx vercel --prod
+```
+
+---
+
+## Limitations & Ethical Disclaimer
+
+- **Educational Purpose**: MindfulTech is an academic machine learning demonstration. It does not provide medical, clinical, or psychological diagnoses.
+- **Not a Diagnostic Instrument**: The system does not diagnose depression, anxiety, ADHD, screen addiction, or any medical condition.
+- **Synthetic Data**: Models are trained on synthetic data with modeled distributions; performance may vary when presented with authentic longitudinal human data.
+- **General Guidance**: Recommendations are common-sense digital wellness practices (e.g., reducing pre-bedtime screen exposure) and should not replace advice from certified healthcare professionals.
+
+---
+
+## Future Scope
+
+- **Passive Data Ingestion**: Integration with mobile OS APIs (Android Digital Wellbeing / Apple Screen Time) or browser extensions for automatic tracking.
+- **Longitudinal Time-Series Models**: Utilizing LSTM or ARIMA to identify longitudinal trend changes and habit progression over weeks/months.
+- **Collaborative Filtering Recommendations**: Implementing recommendation systems tailored to specific occupational profiles (e.g., software engineers vs. students).
+- **Wearable Sensor Integration**: Incorporating circadian rhythm and heart-rate variability (HRV) metrics from smartwatches to measure real physical recovery.
+- **Deep Learning Classifiers**: Benchmarking Multi-Layer Perceptrons (MLPs) against ensemble trees.
+- **Export & Reporting**: Automated PDF generation for weekly and monthly habit summaries.
+
+---
+
+*MindfulTech – Machine Learning Project*

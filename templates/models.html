@@ -1,11 +1,13 @@
 {% extends "base.html" %}
-{% block title %}MindfulTech - ML Models{% endblock %}
+{% block title %}MindfulTech – ML Models{% endblock %}
 {% block content %}
 <section class="py-5">
   <div class="container">
     <h2 class="section-title">Machine Learning Models</h2>
     <p class="text-muted mb-2">This page demonstrates the ML techniques used in MindfulTech. All models were trained on the project's digital-habit dataset using Scikit-learn.</p>
-    <div class="disclaimer mb-4"><i class="bi bi-info-circle me-1"></i>The metrics below were computed on a held-out 20% test set using stratified splitting.</div>
+    <div class="disclaimer mb-4"><i class="bi bi-info-circle me-1"></i>The metrics below were computed on a held-out 20% test set using stratified splitting, with 5-fold cross-validation scores.</div>
+
+    {# --- Classification algorithms --- #}
     <h4 class="mt-4 mb-3">Classification Algorithms</h4>
     <div class="row g-4 mb-4">
       {% set algos = [
@@ -23,6 +25,8 @@
       </div>
       {% endfor %}
     </div>
+
+    {# --- K-Means clustering --- #}
     <h4 class="mb-3">K-Means Clustering</h4>
     <div class="card p-4 mb-4">
       <p class="mb-3">K-Means (k=4) groups users into behavioural clusters based on feature profiles. Cluster labels are dynamically derived from centroid characteristics.</p>
@@ -33,6 +37,14 @@
           <div class="cluster-card">
             <span class="badge bg-secondary mb-1">Cluster {{ cid }}</span>
             <div class="cluster-label">{{ info.label }}</div>
+            {% if info.profile %}
+            <div class="mt-2" style="font-size:.8rem;color:var(--mt-text-muted)">
+              Screen: {{ info.profile.screen_time }}h &middot;
+              Social: {{ info.profile.social_media }}h &middot;
+              Sleep: {{ info.profile.sleep }}h &middot;
+              Focus: {{ info.profile.focus_time }}h
+            </div>
+            {% endif %}
           </div>
         </div>
         {% endfor %}
@@ -41,6 +53,15 @@
       <p class="text-muted mb-0">Cluster descriptions will appear here after model training.</p>
       {% endif %}
     </div>
+
+    {# --- Isolation Forest --- #}
+    <h4 class="mb-3">Isolation Forest (Anomaly Detection)</h4>
+    <div class="card p-4 mb-4">
+      <p class="mb-2"><i class="bi bi-shield-exclamation me-2" style="color:var(--mt-accent)"></i>Isolation Forest detects <strong>statistically unusual</strong> digital usage patterns by measuring how easily an observation can be isolated from the rest of the data.</p>
+      <p class="mb-0 text-muted">When a user's input is flagged as an anomaly, a non-alarming message is displayed indicating the pattern is uncommon — this is <em>not</em> a clinical diagnosis.</p>
+    </div>
+
+    {# --- Evaluation metrics --- #}
     <h4 class="mb-3">Model Evaluation Metrics</h4>
     {% if metrics %}
     <div class="table-responsive mb-4">
@@ -52,6 +73,7 @@
             <th>Precision</th>
             <th>Recall</th>
             <th>F1-Score</th>
+            <th>CV Accuracy</th>
           </tr>
         </thead>
         <tbody>
@@ -62,11 +84,19 @@
             <td>{{ "%.2f"|format(m.precision * 100) }}%</td>
             <td>{{ "%.2f"|format(m.recall * 100) }}%</td>
             <td>{{ "%.2f"|format(m.f1_score * 100) }}%</td>
+            <td>
+              {% if m.cv_mean is defined %}
+              {{ "%.2f"|format(m.cv_mean * 100) }}% ± {{ "%.2f"|format(m.cv_std * 100) }}%
+              {% else %}
+              —
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+
     <h4 class="mb-3">Model Comparison Chart</h4>
     <div class="chart-container mb-4">
       <div style="height:320px"><canvas id="modelCompareChart"></canvas></div>
@@ -74,6 +104,8 @@
     {% else %}
     <p class="text-muted">Metrics will appear here after model training and evaluation.</p>
     {% endif %}
+
+    {# --- Confusion matrices --- #}
     <h4 class="mb-3">Confusion Matrices</h4>
     <div class="row g-4 mb-4">
       {% set cms = [
@@ -91,6 +123,8 @@
       </div>
       {% endfor %}
     </div>
+
+    {# --- Linear Regression --- #}
     <h4 class="mb-3">Optional: Linear Regression</h4>
     <div class="card p-4">
       <p class="mb-0">A Linear Regression model is also trained to predict a continuous <strong>Wellbeing Score (0-100)</strong>, demonstrating regression alongside classification in the same pipeline.</p>

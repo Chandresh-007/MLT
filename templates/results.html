@@ -9,6 +9,18 @@
       This is a <strong>machine-learning-based behavioural risk indicator</strong>, not a medical or psychological diagnosis.
     </div>
     {% if entry %}
+    {# --- Anomaly alert --- #}
+    {% if entry.is_anomaly %}
+    <div class="alert alert-warning d-flex align-items-start mb-4 animate-in" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2 mt-1" style="font-size:1.3rem"></i>
+      <div>
+        <strong>Unusual Pattern Detected</strong><br>
+        {{ entry.anomaly_message or 'Your reported digital usage is statistically unusual compared with typical patterns in the dataset.' }}
+      </div>
+    </div>
+    {% endif %}
+
+    {# --- Risk level --- #}
     <div class="risk-display {{ entry.risk_level|lower }} mb-4 animate-in">
       <p class="text-muted mb-1" style="font-size:.9rem;text-transform:uppercase;letter-spacing:.05em">Risk Level</p>
       <div class="risk-label">{{ entry.risk_level | upper }}</div>
@@ -16,7 +28,9 @@
       <p class="mt-2 mb-0" style="font-size:1.1rem"><strong>Wellbeing Score:</strong> {{ entry.wellbeing_score }} / 100</p>
       {% endif %}
     </div>
+
     <div class="row g-4">
+      {# --- Cluster --- #}
       <div class="col-md-6 animate-in delay-1">
         <div class="cluster-card h-100">
           <h6 class="text-muted text-uppercase mb-2"><i class="bi bi-diagram-3 me-1"></i>Behavioural Cluster</h6>
@@ -26,6 +40,8 @@
           </p>
         </div>
       </div>
+
+      {# --- Patterns --- #}
       <div class="col-md-6 animate-in delay-2">
         <div class="card p-4 h-100">
           <h6 class="text-muted text-uppercase mb-3"><i class="bi bi-search me-1"></i>Detected Patterns</h6>
@@ -36,6 +52,18 @@
           </ul>
         </div>
       </div>
+
+      {# --- Explanation --- #}
+      {% if entry.explanation %}
+      <div class="col-12 animate-in delay-2">
+        <div class="card p-4" style="border-left:4px solid var(--mt-accent)">
+          <h6 class="text-muted text-uppercase mb-3"><i class="bi bi-chat-text me-1"></i>Analysis Summary</h6>
+          <p class="mb-0">{{ entry.explanation }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      {# --- Recommendations --- #}
       <div class="col-12 animate-in delay-3">
         <div class="card p-4">
           <h6 class="text-muted text-uppercase mb-3"><i class="bi bi-lightbulb me-1"></i>Recommendations</h6>
@@ -47,6 +75,7 @@
         </div>
       </div>
     </div>
+
     <div class="text-center mt-4">
       <a href="{{ url_for('analyze') }}" class="btn btn-mt-outline me-2"><i class="bi bi-arrow-repeat me-1"></i>Analyze Again</a>
       <a href="{{ url_for('dashboard') }}" class="btn btn-mt"><i class="bi bi-speedometer2 me-1"></i>Go to Dashboard</a>

@@ -27,11 +27,12 @@
         <li><strong>Random Forest</strong> — ensemble of decision trees for robust classification.</li>
         <li><strong>Support Vector Machine (SVM)</strong> — kernel-based non-linear classifier.</li>
         <li><strong>K-Means Clustering</strong> — unsupervised grouping of usage patterns.</li>
+        <li><strong>Isolation Forest</strong> — anomaly detection to flag statistically unusual usage.</li>
         <li><strong>Linear Regression</strong> — continuous wellbeing-score prediction.</li>
       </ul>
       <p class="mb-0">
-        Models are evaluated using Accuracy, Precision, Recall, F1-score, and
-        Confusion Matrices on a stratified 80/20 train-test split.
+        Models are evaluated using Accuracy, Precision, Recall, F1-score,
+        Confusion Matrices, and 5-fold Cross-Validation on a stratified 80/20 train-test split.
       </p>
     </div>
     <div class="card p-4 mb-4 animate-in delay-2">
@@ -57,14 +58,31 @@
           </ul>
         </div>
       </div>
+      <h6>Optional</h6>
+      <ul class="mb-0">
+        <li>AWS Bedrock — optional natural-language explanation layer (application works fully without it)</li>
+      </ul>
+    </div>
+    <div class="card p-4 mb-4 animate-in delay-2">
+      <h5><i class="bi bi-gear me-2" style="color:var(--mt-primary)"></i>Feature Engineering</h5>
+      <p>In addition to the 13 primary features, 6 derived features are computed:</p>
+      <ul class="mb-0">
+        <li><strong>entertainment_hours</strong> — gaming + short_video</li>
+        <li><strong>total_recreational_screen_time</strong> — social_media + gaming + short_video</li>
+        <li><strong>night_usage_ratio</strong> — proportion of screen time at night</li>
+        <li><strong>focus_to_screen_ratio</strong> — proportion of screen time spent on focused activities</li>
+        <li><strong>sleep_deficit_indicator</strong> — how far below 7.5h the user sleeps</li>
+        <li><strong>usage_intensity</strong> — composite of phone unlocks and notification volume</li>
+      </ul>
     </div>
     <div class="card p-4 mb-4 animate-in delay-3">
       <h5><i class="bi bi-database me-2" style="color:var(--mt-primary)"></i>Dataset</h5>
       <p>
-        The project uses a <strong>synthetic dataset</strong> of 1,500 records generated
-        for educational and demonstration purposes. Risk labels and wellbeing scores
-        are derived from weighted feature rules that model realistic behavioural
-        risk factors.
+        The project uses a <strong>synthetic dataset</strong> of 2,000 records generated
+        for educational and demonstration purposes. Risk labels are derived from
+        weighted feature rules with added Gaussian noise to prevent perfect
+        memorisation by the ML models. Wellbeing scores are computed using a
+        separate heuristic.
       </p>
       <p class="mb-0">
         <strong>Note:</strong> This dataset is not based on real-world survey data.
@@ -91,10 +109,15 @@
       <h5><i class="bi bi-rocket-takeoff me-2" style="color:var(--mt-primary)"></i>Future Improvements</h5>
       <ul class="mb-0">
         <li>Use a real, ethically collected survey dataset.</li>
-        <li>Add neural-network-based models (e.g., MLP classifier).</li>
-        <li>Integrate time-series analysis for longitudinal tracking.</li>
-        <li>Deploy with user authentication for secure personal dashboards.</li>
-        <li>Add data export (CSV / PDF) for user records.</li>
+        <li>Android application with automatic usage synchronization.</li>
+        <li>Browser extension for passive data collection.</li>
+        <li>Real-time notifications and alerts.</li>
+        <li>Wearable device integration.</li>
+        <li>Personalized time-series models for longitudinal analysis.</li>
+        <li>Advanced recommendation systems (collaborative filtering).</li>
+        <li>Cloud deployment for broader access.</li>
+        <li>Neural-network-based models (e.g., MLP classifier).</li>
+        <li>Data export (CSV / PDF) for user records.</li>
       </ul>
     </div>
   </div>

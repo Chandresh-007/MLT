@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MindfulTech – ML-Based Digital Habit & Wellbeing Platform. Analyze your digital usage patterns using machine learning.">
+  <meta name="description" content="MindfulTech – ML-Based Digital Habit &amp; Wellbeing Platform. Analyze your digital usage patterns using machine learning.">
   <title>{% block title %}MindfulTech{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,6 +27,7 @@
           <li class="nav-item"><a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link {% if request.endpoint == 'analyze' %}active{% endif %}" href="{{ url_for('analyze') }}">Analyze</a></li>
           <li class="nav-item"><a class="nav-link {% if request.endpoint == 'analytics' %}active{% endif %}" href="{{ url_for('analytics') }}">Analytics</a></li>
+          <li class="nav-item"><a class="nav-link {% if request.endpoint == 'history' %}active{% endif %}" href="{{ url_for('history') }}">History</a></li>
           <li class="nav-item"><a class="nav-link {% if request.endpoint == 'models_page' %}active{% endif %}" href="{{ url_for('models_page') }}">ML Models</a></li>
           <li class="nav-item"><a class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" href="{{ url_for('about') }}">About</a></li>
         </ul>
