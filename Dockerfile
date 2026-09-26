@@ -30,6 +30,10 @@ COPY . .
 # Create writable directory for SQLite database
 RUN mkdir -p /app/database && chmod 777 /app/database
 
+# Copy and set up entrypoint (remaps MLT_* -> AWS_* env vars for Amplify)
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 # Expose port 8080 (Amplify default for containers)
 EXPOSE 8080
 
@@ -38,4 +42,5 @@ HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/')" || exit 1
 
 # Run with Gunicorn (production WSGI server)
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--threads", "4", "--timeout", "120", "app:app"]
