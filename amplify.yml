@@ -1,0 +1,17 @@
+# MindfulTech – AWS Amplify Build Specification
+# ==============================================
+# Amplify Gen 2 uses this file for container-based deployments.
+# The app runs as a Docker container on port 8080.
+
+version: 1
+applications:
+  - appRoot: .
+    frontend:
+      phases:
+        build:
+          commands:
+            - echo "Building MindfulTech Docker container..."
+      artifacts:
+        baseDirectory: .
+        files:
+          - "**/*"

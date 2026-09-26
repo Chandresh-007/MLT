@@ -1,0 +1,30 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dev/CI files not needed in container
+.env
+.env.example
+*.md
+notebooks/
+scripts/
+requirements-dev.txt
+.vercel/
+vercel.json
+.agents/
